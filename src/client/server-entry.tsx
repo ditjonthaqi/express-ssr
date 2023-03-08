@@ -3,7 +3,7 @@ import React from "react";
 import Page from "./main";
 import { StaticRouter } from "react-router-dom/server";
 
-export const stringifyJSX = (opt: { script: string, url: string }) => {
+export const stringifyJSX = (opt: { script: string, url: string, isDevMode: boolean }) => {
     const htmlFromJSX = ReactServer.renderToString(
         <html lang="en">
             <head>
@@ -17,7 +17,10 @@ export const stringifyJSX = (opt: { script: string, url: string }) => {
                         </React.StrictMode>
                     </StaticRouter>
                 </div>
-                <script dangerouslySetInnerHTML={{ __html: opt.script }}></script>
+                {opt.isDevMode
+                    ? <script dangerouslySetInnerHTML={{ __html: opt.script }}></script>
+                    : <script  src="/client-entry.js"></script>
+                }
             </body>
         </html>
     );

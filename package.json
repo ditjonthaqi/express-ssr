@@ -5,13 +5,13 @@
   "main": "./dist/server/index.js",
   "scripts": {
     "build": "npm run build:server && npm run build:client && npm run build:server-entry && npm run build:client-entry ",
-    "dev": "nodemon --watch src/**/* -e ts,tsx --exec ts-node ./src/server/index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --watch src/**/* -e ts,tsx --exec ts-node --project tsconfig.node.json ./src/server/index.ts ",
     "build:client": "esbuild ./src/client/main.jsx --bundle --platform=browser --outfile=./dist/client/main.js",
     "build:server-entry": "esbuild ./src/client/server-entry.jsx --bundle --platform=node --minify=true --outfile=./dist/client/server-entry.js",
     "build:client-entry": "esbuild ./src/client/client-entry.jsx --bundle --platform=browser --minify=true --outfile=./dist/client/client-entry.js",
     "build:server": "npm run clean && tsc --project ./tsconfig.node.json",
     "clean": "rimraf ./dist && rimraf tsconfig.node.tsbuildinfo",
-    "start": "node ."
+    "start": "cross-env NODE_ENV=production  node ."
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "react": "^18.2.0",
