@@ -31,7 +31,8 @@ const clientEntryFilename = isDevMode
         bundle: true,
         write: false,
         platform: "browser",
-        // minify: true,
+        sourcemap: true,
+        minify: true
     });
 
     const [serverEntryOutput] = serverBundleResult.outputFiles;
