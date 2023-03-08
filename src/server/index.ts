@@ -2,6 +2,7 @@ import express from "express";
 import { config as initEnv } from "dotenv";
 import * as esbuild from "esbuild";
 import path from "path";
+import fs from "fs";
 initEnv();
 
 
@@ -45,11 +46,19 @@ if (!isDevMode) {
     const [serverEntryOutput] = serverBundleResult.outputFiles;
     const [clientEntryOutput] = clientBundleResult.outputFiles;
 
-    const stringifyJSX = <(opt: { script: string, url: string, isDevMode: boolean }) => string>
+    const stringifyJSX = <(opt: { script: string, url: string, isDevMode: boolean }) => string | [string, string]>
         (requireFromString(serverEntryOutput.text).stringifyJSX);
 
     app.get("*", (req, res) => {
         const htmlFromJSX = stringifyJSX({ script: clientEntryOutput.text, url: req.url, isDevMode })
+        if (!isDevMode && typeof htmlFromJSX !== "string") {
+            let toSend = htmlFromJSX[0].replace(`<style id="server-side-styles" type="text/css"></style>`,
+                `<link rel="stylesheet" href="/main.css" />`
+            );
+            fs.writeFileSync(path.resolve(__dirname, "../client/main.css"), htmlFromJSX[1]);
+
+            return   res.type("html").send(toSend);
+        }
         res.type("html").send(htmlFromJSX);
     });
 

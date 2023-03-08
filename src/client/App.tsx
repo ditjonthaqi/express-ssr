@@ -1,3 +1,4 @@
+import { createUseStyles } from "react-jss";
 import { Route, Routes, redirect } from "react-router-dom";
 
 export const App = () => {
@@ -11,8 +12,17 @@ export const App = () => {
     );
 }
 
+const useStyles = createUseStyles(
+    {
+        root: {
+            backgroundColor: "red",
+        }
+    },
+)
+
 const Diti = () => {
+    const classes = useStyles();
     return (
-        <div onClick={console.log}>hello</div>
+        <div className={classes.root} onClick={console.log}>hello</div>
     )
 }
