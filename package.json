@@ -1,0 +1,44 @@
+{
+  "name": "express-ssr",
+  "version": "1.0.0",
+  "description": "Server Side Rendering with Express for React",
+  "main": "./dist/server/index.js",
+  "scripts": {
+    "build": "npm run build:server && npm run build:client && npm run build:server-entry && npm run build:client-entry ",
+    "dev": "nodemon --watch src/**/* -e ts,tsx --exec ts-node ./src/server/index.ts",
+    "build:client": "esbuild ./src/client/main.jsx --bundle --platform=browser --outfile=./dist/client/main.js",
+    "build:server-entry": "esbuild ./src/client/server-entry.jsx --bundle --platform=node --minify=true --outfile=./dist/client/server-entry.js",
+    "build:client-entry": "esbuild ./src/client/client-entry.jsx --bundle --platform=browser --minify=true --outfile=./dist/client/client-entry.js",
+    "build:server": "npm run clean && tsc --project ./tsconfig.node.json",
+    "clean": "rimraf ./dist && rimraf tsconfig.node.tsbuildinfo",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ditjonthaqi/express-ssr.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ditjonthaqi/express-ssr/issues"
+  },
+  "homepage": "https://github.com/ditjonthaqi/express-ssr#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.14.6",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "esbuild": "^0.17.11",
+    "nodemon": "^2.0.21",
+    "rimraf": "^4.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.2"
+  }
+}
